@@ -46,8 +46,8 @@ class MainActivity : AppCompatActivity() {
 
         var randomTextView = findViewById<TextView>(R.id.textViewRandom)
 
-        var randomValue = Random.nextInt(1, 101)
-
+        //var randomValue = Random.nextInt(1, 101)
+        var randomValue = (1..100).random()
         randomTextView.text = randomValue.toString()
     }
 
@@ -79,11 +79,12 @@ class MainActivity : AppCompatActivity() {
     private fun checkAnswerAndShowToast() {
         var textView = findViewById<TextView>(R.id.spartaTextView)
         var randomTextView = findViewById<TextView>(R.id.textViewRandom)
-        if (textView.text.toString() == randomTextView.text) {
+
+        if (textView.text.toString() == randomTextView.text.toString()) {
             Toast.makeText(this, "일치합니다", Toast.LENGTH_SHORT).show()
-        } else if (textView != randomTextView) {
+        } else
             Toast.makeText(this, "일치하지 않습니다", Toast.LENGTH_SHORT).show()
-        }
+
         /**
          * Toast 사용 예)
          * Toast.makeText(this, "메세지", Toast.LENGTH_SHORT).show() // Toast.LENGTH_SHORT 대신 Toast.LENGTH_LONG 또한 사용 가능
