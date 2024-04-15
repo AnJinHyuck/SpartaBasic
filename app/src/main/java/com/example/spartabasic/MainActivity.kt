@@ -33,9 +33,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun setupButton() {
-        // TODO("activity_main.xml에 작성되어 있는 button을 findViewById를 사용하여 button이라는 Button 타입의 변수에 할당하기)
         var button = findViewById<Button>(R.id.clickButton)
-        // 위 코드가 작성되어야 아래 코드가 수행될 수 있음!
         button.setOnClickListener {
             job?.cancel()
             checkAnswerAndShowToast()
@@ -45,8 +43,6 @@ class MainActivity : AppCompatActivity() {
     private fun setRandomValueBetweenOneToHundred() {
 
         var randomTextView = findViewById<TextView>(R.id.textViewRandom)
-
-        //var randomValue = Random.nextInt(1, 101)
         var randomValue = (1..100).random()
         randomTextView.text = randomValue.toString()
     }
@@ -54,18 +50,8 @@ class MainActivity : AppCompatActivity() {
     private fun setJobAndLaunch() {
 
         var textView = findViewById<TextView>(R.id.spartaTextView)
-        /*job = lifecycleScope.launch {
-            var i = 1
-            while (isActive && i <= 100) {
-                textView.text = i.toString()
-                delay(500)
-                i += 1 // ++i, i++
-            }
-        }*/
-
         job = lifecycleScope.launch {
 
-            // 아래 /*...*/ 안에 코드를 작성하세요.
             for (i in 1..100) {
                 if (isActive) {
                     textView.text = i.toString()
