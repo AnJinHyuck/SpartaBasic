@@ -11,11 +11,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.spartabasic.databinding.ActivityMainBinding
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.NonCancellable.isActive
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlin.coroutines.suspendCoroutine
 
 class MainActivity : AppCompatActivity() {
     private var job: Job? = null
@@ -23,9 +21,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val TAG = "Check"
-    private var counter = 1
+    private var counter = 0
     private var randomValue = (1..100).random()
-    private var btn = true
+    private var isBtnClicked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState != null) {
             randomValue = savedInstanceState.getInt("randomValue")
             counter = savedInstanceState.getInt("counter")
-            btn = savedInstanceState.getBoolean("btn")
+            isBtnClicked = savedInstanceState.getBoolean("btn")
             binding.spartaTextView.text = counter.toString()
         }
 
@@ -51,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         setRandomValueBetweenOneToHundred()
         setJobAndLaunch()
         Log.d("Checkcounter", "$counter")
-        Log.d("Check", "$btn")
+        Log.d("Check", "$isBtnClicked")
         Log.d("Jii", "${binding.spartaTextView.text}")
 
         //Log.d("Check","$randomValue")
@@ -62,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         super.onRestart()
         Log.i(TAG, "onRestart")
         Log.d("Checkcounter", "$counter")
-        Log.d("Check", "$btn")
+        Log.d("Check", "$isBtnClicked")
         Log.d("Jii", "${binding.spartaTextView.text}")
     }
 
@@ -71,11 +69,11 @@ class MainActivity : AppCompatActivity() {
         Log.i(TAG, "onResume")
         //Log.d("Check","$randomValue")
         Log.d("Checkcounter", "$counter")
-        Log.d("Check", "$btn")
-        if (btn) {
+        Log.d("Check", "$isBtnClicked")
+        if (!isBtnClicked) {
             setJobAndLaunch()
         }
-        Log.d("Check", "$btn")
+        Log.d("Check", "$isBtnClicked")
         Log.d("Jii", "${binding.spartaTextView.text}")
 
 
@@ -87,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         Log.i(TAG, "onPause")
         //Log.d("Check","$randomValue")
         Log.d("Checkcounter", "$counter")
-        Log.d("Check", "$btn")
+        Log.d("Check", "$isBtnClicked")
         Log.d("Jii", "${binding.spartaTextView.text}")
 
     }
@@ -97,7 +95,7 @@ class MainActivity : AppCompatActivity() {
         Log.i(TAG, "onStop")
         //Log.d("Check","$randomValue")
         Log.d("Checkcounter", "$counter")
-        Log.d("Check", "$btn")
+        Log.d("Check", "$isBtnClicked")
         Log.d("Jii", "${binding.spartaTextView.text}")
     }
 
@@ -106,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         Log.i(TAG, "onStart")
         //Log.d("Check","$randomValue")
         Log.d("Checkcounter", "$counter")
-        Log.d("Check", "$btn")
+        Log.d("Check", "$isBtnClicked")
         Log.d("Jii", "${binding.spartaTextView.text}")
 
 
@@ -117,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         Log.i(TAG, "onDestroy")
         //Log.d("Check","$randomValue")
         Log.d("Checkcounter", "$counter")
-        Log.d("Check", "$btn")
+        Log.d("Check", "$isBtnClicked")
         Log.d("Jii", "${binding.spartaTextView.text}")
     }
 
@@ -126,9 +124,9 @@ class MainActivity : AppCompatActivity() {
         Log.i(TAG, "onRestoreInstanceState")
         counter = savedInstanceState.getInt("counter")
         //Log.d("Check","$randomValue")
-        Log.d("Checkcounter", "$counter")
-        Log.d("Check", "$btn")
-        Log.d("Jii", "${binding.spartaTextView.text}")
+//        Log.d("Checkcounter", "$counter")
+//        Log.d("Check", "$isBtnClicked")
+//        Log.d("Jii", "${binding.spartaTextView.text}")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -136,22 +134,22 @@ class MainActivity : AppCompatActivity() {
         Log.i(TAG, "onSaveInstanceState")
         outState.putInt("counter", counter)
         outState.putInt("randomValue", randomValue)
-        outState.putBoolean("btn", btn)
+        outState.putBoolean("btn", isBtnClicked)
         //Log.d("Check","$randomValue")
-        Log.d("Checkcounter", "$counter")
-        Log.d("Check", "$btn")
-        Log.d("Jii", "${binding.spartaTextView.text}")
+//        Log.d("Checkcounter", "$counter")
+//        Log.d("Check", "$isBtnClicked")
+//        Log.d("Jii", "${binding.spartaTextView.text}")
     }
 
     private fun setupButton() {
         binding.clickButton.setOnClickListener {
             checkAnswerAndShowToast()
             job?.cancel()
-            btn = false
+            isBtnClicked = true
             counter = binding.spartaTextView.text.toString().toInt()
-            Log.d("Check", "$btn")
+         //   Log.d("Check", "$isBtnClicked")
         }
-        Log.d("Jii", "${binding.spartaTextView.text}")
+       // Log.d("Jii", "${binding.spartaTextView.text}")
 
 
     }
@@ -164,7 +162,7 @@ class MainActivity : AppCompatActivity() {
     private fun setJobAndLaunch() {
         job?.cancel() // job is uninitialized exception
         job = lifecycleScope.launch {
-            while (counter <= 100 && btn) {
+            while (counter <= 100 && !isBtnClicked) {
                 if (isActive) {
                     binding.spartaTextView.text = counter++.toString()
                     delay(1000) // 1초 = 1000
